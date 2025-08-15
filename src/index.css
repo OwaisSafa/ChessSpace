@@ -1,0 +1,311 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+    
+    /* Chess board colors */
+    --chess-light: 48 22% 85%;
+    --chess-dark: 25 25% 65%;
+    --chess-accent: 210 100% 65%;
+    --chess-highlight: 120 45% 60%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    
+    /* Dark theme board colors */
+    --chess-light: 35 15% 70%;
+    --chess-dark: 25 25% 45%;
+    --chess-accent: 210 100% 60%;
+    --chess-highlight: 120 45% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Mobile scrolling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Touch targets */
+  button, input, select, textarea {
+    @apply touch-manipulation;
+  }
+}
+
+@layer utilities {
+  .chess-square-light {
+    background: hsl(var(--chess-light));
+    @apply transition-all duration-200 hover:brightness-105;
+  }
+  
+  .chess-square-dark {
+    background: hsl(var(--chess-dark));
+    @apply transition-all duration-200 hover:brightness-110;
+  }
+  
+  .chess-square-selected {
+    @apply ring-2 ring-blue-500 ring-inset;
+    background: hsl(var(--chess-accent) / 0.3) !important;
+  }
+  
+  .chess-square-valid-move::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-green-500/40;
+    margin: 15%;
+  }
+  
+  .chess-piece {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold select-none transition-transform hover:scale-110;
+    font-family: 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji', 'Symbols', monospace;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    line-height: 1;
+    display: inline-block;
+  }
+  
+  .chess-piece-white {
+    @apply text-slate-100;
+  }
+  
+  .chess-piece-black {
+    @apply text-slate-800 dark:text-slate-900;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+  }
+  
+  .header-bg {
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.95) 100%);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+  }
+  
+  .active-timer {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
+    }
+    to {
+      box-shadow: 0 0 15px hsl(var(--primary) / 0.5);
+    }
+  }
+  
+  /* Mobile-specific improvements */
+  @media (max-width: 640px) {
+    .header-bg {
+      backdrop-filter: blur(15px);
+    }
+    
+    .move-history-grid {
+      @apply grid-cols-2 gap-0.5;
+    }
+    
+    .move-number {
+      @apply px-1 py-1 text-xs;
+    }
+    
+    .move-cell {
+      @apply px-1 py-1 text-xs;
+    }
+  }
+  
+  /* Extra small screens */
+  @media (max-width: 475px) {
+    .move-history-grid {
+      @apply grid-cols-1;
+    }
+  }
+  
+  .panel {
+    @apply bg-card/95 backdrop-blur-sm;
+  }
+  
+  .btn-interactive {
+    @apply transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+  
+  /* Mobile styles */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Small screen adjustments */
+  @media (max-width: 768px) {
+    .chess-piece {
+      @apply text-lg;
+    }
+    
+    button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .chess-piece {
+      @apply text-base;
+    }
+  }
+  
+  /* Extra small screens */
+  @screen xs {
+    .xs\:inline { display: inline; }
+    .xs\:w-80 { width: 20rem; }
+    .xs\:h-80 { height: 20rem; }
+    .xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .xs\:text-base { font-size: 1rem; line-height: 1.5rem; }
+    .xs\:p-3 { padding: 0.75rem; }
+    .xs\:gap-2 { gap: 0.5rem; }
+    .xs\:gap-3 { gap: 0.75rem; }
+    .xs\:mb-3 { margin-bottom: 0.75rem; }
+    .xs\:mt-3 { margin-top: 0.75rem; }
+    .xs\:h-9 { height: 2.25rem; }
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .gradient-bg {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
+  /* Focus styles */
+  @layer base {
+    *:focus-visible {
+      @apply ring-2 ring-ring ring-offset-2 ring-offset-background outline-none;
+    }
+  }
+
+  /* Move history styles */
+  .move-history-grid {
+    @apply grid grid-cols-3 gap-1;
+  }
+  
+  .move-number {
+    @apply px-2 py-1.5 font-mono text-xs text-muted-foreground bg-secondary/30 rounded;
+  }
+  
+  .move-cell {
+    @apply px-2 py-1.5 font-mono cursor-pointer hover:bg-primary/10 rounded transition-colors;
+  }
+  
+  .move-cell-active {
+    @apply bg-primary/20 ring-1 ring-primary;
+  }
+  
+  .move-cell-current {
+    @apply bg-green-500/20 ring-1 ring-green-500;
+  }
+  
+  .move-history-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) transparent;
+  }
+  
+  .move-history-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .move-history-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .move-history-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 2px;
+  }
+  
+  .move-history-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
